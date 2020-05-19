@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "module": "commonjs",
+    "module": "esnext",
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
