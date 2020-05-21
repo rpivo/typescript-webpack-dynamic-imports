@@ -1,4 +1,5 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
@@ -36,7 +37,19 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
       template: './src/index.html',
     }),
   ];
+
   if (analyze) pluginsArray.push(new BundleAnalyzerPlugin());
+  if (!analyze && mode === 'production') pluginsArray.push(new CompressionPlugin({
+    algorithm: 'brotliCompress',
+    compressionOptions: {
+      level: 11,
+    },
+    deleteOriginalAssets: true,
+    filename: '[path].br[query]',
+    minRatio: 0.8,
+    test: /\.(js|css|html|svg)$/,
+    threshold: 10240,
+  })); 
 
   return {
     devServer: {
