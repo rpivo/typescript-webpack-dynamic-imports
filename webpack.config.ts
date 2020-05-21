@@ -5,14 +5,19 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const path = require('path');
 
+type ArgV = {
+  mode?: string;
+};
+
 type Env = {
   analyze?: boolean;
 };
-type ArgV = {
-  mode?: string;
-}
 
-module.exports = (env: Env = {}, argv: ArgV) => {
+type Module = {
+  context: string;
+};
+
+module.exports = (env: Env = {}, argv: ArgV = {}) => {
   const { analyze = false } = env;
   const { mode = 'development' } = argv;
   const reactEnv = mode === 'production' ? 'production.min' : 'development';
@@ -56,12 +61,21 @@ module.exports = (env: Env = {}, argv: ArgV) => {
       ],
     },
     optimization: {
-      occurrenceOrder: true,
-      providedExports: true,
-      removeAvailableModules: true,
-      removeEmptyChunks: true,
+      runtimeChunk: 'single',
       splitChunks: {
         chunks: 'all',
+        maxInitialRequests: Infinity,
+        minSize: 0,
+        maxSize: 100000,
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name(module: Module) {
+              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)![1];
+              return `npm.${packageName.replace('@', '')}`;
+            },
+          },
+        },
       },
     },
     output: {
