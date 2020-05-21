@@ -39,17 +39,26 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
   ];
 
   if (analyze) pluginsArray.push(new BundleAnalyzerPlugin());
-  if (!analyze && mode === 'production') pluginsArray.push(new CompressionPlugin({
-    algorithm: 'brotliCompress',
-    compressionOptions: {
-      level: 11,
-    },
-    deleteOriginalAssets: true,
-    filename: '[path].br[query]',
-    minRatio: 0.8,
-    test: /\.(js|css|html|svg)$/,
-    threshold: 10240,
-  })); 
+  if (!analyze && mode === 'production') {
+    pluginsArray.push(new CompressionPlugin({
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }));
+    pluginsArray.push(new CompressionPlugin({
+      algorithm: 'brotliCompress',
+      compressionOptions: {
+        level: 11,
+      },
+      deleteOriginalAssets: true,
+      filename: '[path].br[query]',
+      minRatio: 0.8,
+      test: /\.(js|css|html|svg)$/,
+      threshold: 10240,
+    })); 
+  };
 
   return {
     devServer: {
