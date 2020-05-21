@@ -1,4 +1,3 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -25,7 +24,6 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
   const reactString = mode === 'production' ? 'production.min' : 'development';
 
   let pluginsArray = [
-    new CleanWebpackPlugin(),
     new CopyPlugin({
       patterns: [
         `node_modules/react/umd/react.${reactString}.js`,
@@ -41,11 +39,12 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
   if (analyze) pluginsArray.push(new BundleAnalyzerPlugin());
   if (!analyze && mode === 'production') {
     pluginsArray.push(new CompressionPlugin({
-      filename: '[path].gz[query]',
       algorithm: 'gzip',
+      deleteOriginalAssets: true,
+      filename: '[path].gz[query]',
+      minRatio: 0.8,
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
-      minRatio: 0.8,
     }));
     pluginsArray.push(new CompressionPlugin({
       algorithm: 'brotliCompress',
