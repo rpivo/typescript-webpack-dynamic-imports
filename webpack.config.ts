@@ -20,17 +20,19 @@ type Module = {
 module.exports = (env: Env = {}, argv: ArgV = {}) => {
   const { analyze = false } = env;
   const { mode = 'development' } = argv;
-  const reactEnv = mode === 'production' ? 'production.min' : 'development';
+
+  const reactString = mode === 'production' ? 'production.min' : 'development';
+
   let pluginsArray = [
     new CleanWebpackPlugin(),
     new CopyPlugin({
       patterns: [
-        `node_modules/react/umd/react.${reactEnv}.js`,
-        `node_modules/react-dom/umd/react-dom.${reactEnv}.js`,
+        `node_modules/react/umd/react.${reactString}.js`,
+        `node_modules/react-dom/umd/react-dom.${reactString}.js`,
       ],
     }),
     new HtmlWebpackPlugin({
-      reactEnv,
+      reactString,
       template: './src/index.html',
     }),
   ];
