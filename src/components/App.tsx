@@ -2,12 +2,8 @@ import React from 'react';
 
 const App = () => {
   const handleLodashClick = async () => {
-    const obj = {
-      foo: "bar",
-    };
-    const _ = await import(/* webpackChunkName: "lodash" */"lodash");
-    const val = _.get(obj, "foo", "baz");
-    console.log(val);
+    const AWS = await import(/* webpackChunkName: 'aws' */'aws-sdk/global');
+    console.log(AWS);
   };
 
   return (
