@@ -1,7 +1,7 @@
 import React from 'react';
 
 const App = () => {
-  const handleLodashClick = async () => {
+  const handleClick = async () => {
     const AWS = await import(/* webpackChunkName: 'aws' */'aws-sdk/global');
     console.log(AWS);
   };
@@ -9,7 +9,7 @@ const App = () => {
   return (
     <div>
       Hello from App!
-      <button onClick={handleLodashClick}>Lodash</button>
+      <button onClick={handleClick}>Import AWS</button>
     </div>
   );
 };
