@@ -35,6 +35,6 @@
     "analyze": "yarn clean && webpack --env.analyze --mode=production --progress",
     "build": "yarn clean && webpack --mode=production --progress",
     "clean": "rm -rf dist && mkdir dist",
-    "start": "yarn clean && webpack-dev-server --mode=development --progress"
+    "serve": "yarn build && node server"
   }
 }
