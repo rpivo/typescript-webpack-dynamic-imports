@@ -40,11 +40,8 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
   if (!analyze && mode === 'production') {
     pluginsArray.push(new CompressionPlugin({
       algorithm: 'gzip',
-      deleteOriginalAssets: true,
       filename: '[path].gz[query]',
-      minRatio: 0.8,
       test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
     }));
     pluginsArray.push(new CompressionPlugin({
       algorithm: 'brotliCompress',
@@ -53,9 +50,7 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
       },
       deleteOriginalAssets: true,
       filename: '[path].br[query]',
-      minRatio: 0.8,
       test: /\.(js|css|html|svg)$/,
-      threshold: 10240,
     })); 
   };
 
@@ -89,7 +84,7 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
         chunks: 'all',
         maxInitialRequests: Infinity,
         minSize: 0,
-        maxSize: 100000,
+        maxSize: 244000,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
