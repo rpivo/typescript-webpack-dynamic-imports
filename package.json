@@ -33,8 +33,8 @@
   },
   "scripts": {
     "analyze": "yarn clean && webpack --env.analyze --mode=production --progress",
-    "build": "yarn clean && webpack --mode=production --progress",
-    "clean": "rm -rf dist && mkdir dist",
+    "build": "./build.sh",
+    "clean": "rm -rf dist && mkdir dist && mkdir dist/br && mkdir dist/gz",
     "serve": "yarn build && node server"
   }
 }
