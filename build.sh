@@ -1,0 +1,1 @@
+yarn clean && webpack --mode=production --progress && mv **/*.br dist/br && mv **/*.gz dist/gz
