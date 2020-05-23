@@ -13,5 +13,6 @@ phases:
 
 artifacts:
   files:
-    - dist/*
+    - dist/br/*
+    - dist/gz/*
   discard-paths: yes
