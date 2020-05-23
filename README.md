@@ -1,5 +1,3 @@
-## Optimizations
-
 ### Packages Used
 
 #### compression-webpack-plugin
@@ -16,3 +14,13 @@ Generates an `index.html` file from a template during the build that can change 
 
 #### webpack-bundle-analyzer
 Graphically displays chunk and bundle sizes, providing a deeper understanding of the build output.
+
+<hr />
+
+### Optimizations
+
+#### brotli & gzip Compression
+Webpack builds both brotli and gzip files and will serve brotli files unless the current browser is Internet Explorer.
+
+#### Dynamic Imports
+Inside **App.tsx** is an example of a dynamic import. When serving the build, clicking on the rendered button results in lazy-loaded imports. When doing this, these dynamic imports can be seen coming in on the network tab when the button is clicked rather than on page load.
