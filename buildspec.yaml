@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo installing packages...
+      - npm install --global yarn
+      - yarn install
+  build:
+    commands:
+      - echo building...
+      - yarn build
+
+artifacts:
+  files:
+    - dist/*
+  discard-paths: yes
