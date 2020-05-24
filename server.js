@@ -4,15 +4,15 @@ const expressStaticGzip = require('express-static-gzip');
 const app = express();
 const port = 3000;
 
-app.use('/', (req, res, next) => {
-  const isInternetExplorer = req.headers['user-agent'] &&
-    req.headers['user-agent'].indexOf('MSIE') > -1;
+app.use('/gz', expressStaticGzip('dist/gz', {
+  enableBrotli: true,
+}));
 
-  const path = isInternetExplorer ? 'dist/gz' : 'dist/br';
+app.use('/br', expressStaticGzip('dist/br', {
+  enableBrotli: true,
+}));
 
-  expressStaticGzip(path, {
-    enableBrotli: isInternetExplorer ? false : true,
-  });
+app.listen(port, () => {
+  console.log(`\n\nbrotli compressed files --> http://localhost:${port}/br/index.html`);
+  console.log(`\n\ngzip compressed files --> http://localhost:${port}/gz/index.html`);
 });
-
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));

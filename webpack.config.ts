@@ -41,7 +41,7 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
     pluginsArray.push(new CompressionPlugin({
       algorithm: 'gzip',
       filename: '[path].gz[query]',
-      test: /\.js$|\.css$|\.html$/,
+      test: /\.(css|html|js|svg)$/,
     }));
     pluginsArray.push(new CompressionPlugin({
       algorithm: 'brotliCompress',
@@ -50,7 +50,7 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
       },
       deleteOriginalAssets: true,
       filename: '[path].br[query]',
-      test: /\.(js|css|html|svg)$/,
+      test: /\.(css|html|js|svg)$/,
     })); 
   };
 
