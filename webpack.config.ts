@@ -31,8 +31,9 @@ module.exports = (env: Env = {}, argv: ArgV = {}) => {
       ],
     }),
     new HtmlWebpackPlugin({
+      filename: 'index.html',
       reactString,
-      template: './src/index.html',
+      template: './src/template.html',
     }),
   ];
 
