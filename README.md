@@ -20,7 +20,10 @@ Graphically displays chunk and bundle sizes, providing a deeper understanding of
 ### Optimizations
 
 #### brotli & gzip Compression
-Webpack builds both brotli and gzip files and will serve brotli files unless the current browser is Internet Explorer.
+Webpack builds both brotli and gzip files, outputting these files into `/br` and `/gz` folders inside the `/dist` output folder. When the local express server is spun up, each of these folder paths can be tested for performance (the brotli folder will generally be lighter). 
 
 #### Dynamic Imports
-Inside **App.tsx** is an example of a dynamic import. When serving the build, clicking on the rendered button results in lazy-loaded imports. When doing this, these dynamic imports can be seen coming in on the network tab when the button is clicked rather than on page load.
+Inside **App.tsx** is an example of a dynamic import. When serving the build, clicking on the rendered button results in lazy-loaded imports. These dynamic imports can be seen coming in on the network tab when the button is clicked rather than on page load.
+
+#### Webpack `maxSize`
+Webpack is set to output bundles and chunks with a `maxSize` of 244,000 bytes. Webpack identifies files larger than 244kb as `big`.
