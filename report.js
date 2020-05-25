@@ -11,6 +11,8 @@ let metrics = [];
 metrics.push(['brotli', files.filter(file => file.includes('br-'))]);
 metrics.push(['gzip', files.filter(file => file.includes('gz-'))]);
 
+let report = {};
+
 const getAllMetricAverages = (contentArr, metricName) => {
   const numericValueKeys = {
     'first-contentful-paint': 'First Contentful Paint',
@@ -49,20 +51,31 @@ const getAllMetricAverages = (contentArr, metricName) => {
     'mainDocumentTransferSize': 'Main Document Transfer Size',
   };
 
-  const getAverage = arr => arr.reduce((acc, curr) => acc + curr, 0);
+  report[metricName] = {};
 
-  console.log(`\n\x1b[37m${metricName}\n-------------------------------------------------------`);
+  const getAverage = arr => arr.reduce((acc, curr) => acc + curr, 0) / contentArr.length;
+
+  console.log(`\n\x1b[37m${metricName}\n`);
+
   for (let [key, value] of Object.entries(numericValueKeys)) {
     let arr = [];
+
     for (item of contentArr) arr.push(item.audits[key].numericValue);
-    console.log(`\x1b[37m> ${value}: \x1b[32m${getAverage(arr) / contentArr.length}`);
+
+    const average = getAverage(arr);
+    report[metricName][key] = average;
+    console.log(`\x1b[37m> ${value}: \x1b[32m${getAverage(arr)}`);
   }
+
   for (let [key, value] of Object.entries(diagnosticsKeys)) {
     let arr = [];
-    for (item of contentArr) arr.push(item.audits.diagnostics.details.items[0][`${key}`]);
-    console.log(`\x1b[37m> ${value}: \x1b[32m${getAverage(arr) / contentArr.length}`);
+
+    for (item of contentArr) arr.push(item.audits.diagnostics.details.items[0][key]);
+
+    const average = getAverage(arr);
+    report[metricName][key] = average;
+    console.log(`\x1b[37m> ${value}: \x1b[32m${average}`);
   }
-  console.log('\n');
 }
 
 const getPromises = group =>
@@ -72,6 +85,19 @@ const getPromises = group =>
 metrics.forEach(metric => {
   Promise.all(getPromises(metric[1]))
     .then(results => getAllMetricAverages(results, metric[0]))
+    .finally(() => {
+      if (Object.keys(report).length === metrics.length) {
+        report = JSON.stringify(report);
+
+        const filename = `report-${new Date().toLocaleString()}.json`
+          .replace(/(\/|\s|:)/g,'-').replace(',','');
+
+        fs.writeFile(`./reports/${filename}`, report, (err) => {
+          if (err) throw err;
+          console.log(`\n\x1b[37mReport written to file: \x1b[36m${filename}`);
+        }); 
+      }
+    })
     .catch(function (error) {
       return error;
     });

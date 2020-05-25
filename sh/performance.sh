@@ -7,3 +7,4 @@ lighthouse http://localhost:3000/gz/index.html --emulated-form-factor=none --onl
 done
 printf "\n\nAveraged Metrics\n"
 node report.js
+printf "\n"
